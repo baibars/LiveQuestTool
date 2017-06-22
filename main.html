@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			.mui-views,
+			.mui-view,
+			.mui-pages,
+			.mui-page,
+			.mui-page-content {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #efeff4;
+			}
+			.mui-pages {
+				top: 46px;
+				height: auto;
+			}
+			.mui-scroll-wrapper,
+			.mui-scroll {
+				background-color: #efeff4;
+			}
+			.mui-page.mui-transitioning {
+				-webkit-transition: -webkit-transform 200ms ease;
+				transition: transform 200ms ease;
+			}
+			.mui-page-left {
+				-webkit-transform: translate3d(0, 0, 0);
+				transform: translate3d(0, 0, 0);
+			}
+			.mui-ios .mui-page-left {
+				-webkit-transform: translate3d(-20%, 0, 0);
+				transform: translate3d(-20%, 0, 0);
+			}
+			.mui-navbar {
+				position: fixed;
+				right: 0;
+				left: 0;
+				z-index: 10;
+				height: 44px;
+				background-color: #f7f7f8;
+			}
+			.mui-navbar .mui-bar {
+				position: absolute;
+				background: transparent;
+				text-align: center;
+			}
+			.mui-android .mui-navbar-inner.mui-navbar-left {
+				opacity: 0;
+			}
+			.mui-ios .mui-navbar-left .mui-left,
+			.mui-ios .mui-navbar-left .mui-center,
+			.mui-ios .mui-navbar-left .mui-right {
+				opacity: 0;
+			}
+			.mui-navbar .mui-btn-nav {
+				-webkit-transition: none;
+				transition: none;
+				-webkit-transition-duration: .0s;
+				transition-duration: .0s;
+			}
+			.mui-navbar .mui-bar .mui-title {
+				display: inline-block;
+				position: static;
+				width: auto;
+			}
+			.mui-page-shadow {
+				position: absolute;
+				right: 100%;
+				top: 0;
+				width: 16px;
+				height: 100%;
+				z-index: -1;
+				content: '';
+			}
+			.mui-page-shadow {
+				background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+				background: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+			}
+			.mui-navbar-inner.mui-transitioning,
+			.mui-navbar-inner .mui-transitioning {
+				-webkit-transition: opacity 200ms ease, -webkit-transform 200ms ease;
+				transition: opacity 200ms ease, transform 200ms ease;
+			}
+			.mui-page {
+				display: none;
+			}
+			.mui-pages .mui-page {
+				display: block;
+			}
+			.mui-page .mui-table-view:first-child {
+				margin-top: 15px;
+			}
+			.mui-page .mui-table-view:last-child {
+				margin-bottom: 30px;
+			}
+			.mui-table-view {
+				margin-top: 20px;
+			}
+			.mui-table-view:after {
+				height: 0;
+			}
+			.mui-table-view span.mui-pull-right {
+				color: #999;
+			}
+			.mui-table-view-divider {
+				background-color: #efeff4;
+				font-size: 14px;
+			}
+			.mui-table-view-divider:before,
+			.mui-table-view-divider:after {
+				height: 0;
+			}
+			.mui-content-padded {
+				margin: 10px 0px;
+			}
+			.mui-locker {
+				margin: 35px auto;
+				display: none;
+			}
+			.mui-progressbar-danger span {
+				background-color: #dd524d;
+			}
+
+			.mui-btn {
+				padding: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app" class="mui-views">
+			<div class="mui-view">
+				<div class="mui-navbar">
+				</div>
+				<div class="mui-pages">
+				</div>
+			</div>
+		</div>
+		<div id="pageMain" class="mui-page">
+			<!--页面标题栏开始-->
+			<div class="mui-navbar-inner mui-bar mui-bar-nav">
+				<h1 id="mainTitle" class="mui-center mui-title">您好</h1>
+				<button id='quit' class="mui-pull-right mui-btn-link">注销</button>
+				<button id='refresh' class="mui-pull-left mui-btn mui-btn-primary">刷新</button>
+			</div>
+			<!--页面标题栏结束-->
+			<!--页面主内容区开始-->
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul class="mui-table-view">
+							<li id="anchorName" class="mui-table-view-cell" style="text-align: left;">
+								主播:
+							</li>
+							<li id="levelCell" class="mui-table-view-cell" style="text-align: left;">
+								<a id="levelUpBonus" class="mui-navigate-right"><div id='levelVal'>等级：</div><span class="mui-badge mui-badge-danger">升级奖励</span></a>
+							</li>
+							<li id="expCell" class="mui-table-view-cell" style="text-align: left;">
+								<a id='expVal'>经验：</a>
+							</li>
+							<li id="expProgCell" class="mui-table-view-cell" style="text-align: left;">
+								<div id="mainExpProg" class="mui-progressbar mui-progressbar-danger">
+									<span></span>
+								</div>
+							</li>
+						</ul>
+						<ul id="questStateCell" class="mui-table-view">
+							<li id="questStateVal" class="mui-table-view-cell" style="text-align: center;">
+								<a>当前任务</a>
+							</li>
+						</ul>
+						<button id="newQuestBtn" style="margin-top: 20px;" type="button" class="mui-btn mui-btn-primary mui-btn-block">领取任务</button>				
+						<div id="curQuest" class="mui-card">
+							<div class="mui-card-header mui-card-media">
+								<img src="./images/logo.png" />
+								<div class="mui-media-body" style="line-height: 32px;" >
+									<div id="title">任务标题</div>
+								</div>
+							</div>
+							<div class="mui-card-content" >
+								<img src="./images/yuantiao.jpg" alt="" width="100%"/>
+								<div id="desc" class="mui-card-content-inner">
+									任务描述
+								</div>
+							</div>
+							<div class="mui-card-footer">
+								<a id="completeQuestBtn" class="mui-card-link">完成任务</a>
+								<a id="dropQuestBtn" class="mui-card-link">放弃任务</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--页面主内容区结束-->
+		</div>
+
+		<script src="./js/mui.min.js"></script>
+		<script src="./js/mui.view.js"></script>
+		<script src="./js/app.js"></script>
+		
+		<script>
+			mui.init();
+			 //初始化单页view
+			var viewApi = mui('#app').view({
+				defaultPage: '#pageMain'
+			});	
+			mui('.mui-scroll-wrapper').scroll();
+
+			var mainTitle = document.getElementById('mainTitle');
+			var anchorName = document.getElementById('anchorName');
+			var levelCell = document.getElementById('levelCell');
+			var levelVal = document.getElementById('levelVal');
+			var expCell = document.getElementById('expCell');
+			var expVal = document.getElementById('expVal');
+			var expProgCell = document.getElementById('expProgCell');
+			var questStateCell = document.getElementById('questStateCell');
+			var questStateVal = document.getElementById('questStateVal');
+			var newQuestBtn = document.getElementById('newQuestBtn');
+			var curQuest = document.getElementById('curQuest');
+			var completeQuestBtn = document.getElementById('completeQuestBtn');
+			var dropQuestBtn = document.getElementById('dropQuestBtn');
+
+			anchorName.style.display = 'none';
+			levelCell.style.display = 'none';
+			expCell.style.display = 'none';
+			expProgCell.style.display = 'none';
+			questStateCell.style.display = 'none';
+			newQuestBtn.style.display = 'none';
+			curQuest.style.display = 'none';
+			completeQuestBtn.style.display = 'none';
+			dropQuestBtn.style.display = 'none';
+
+			var refreshMain = function()
+			{
+				var state = app.getState();
+				if (null == state.account)
+				{
+					return;
+				}
+				
+				anchorName.style.display = 'none';
+				levelCell.style.display = 'none';
+				expCell.style.display = 'none';
+				expProgCell.style.display = 'none';
+				questStateCell.style.display = 'none';
+				newQuestBtn.style.display = 'none';
+				curQuest.style.display = 'none';
+				
+				switch (state.type)
+				{
+				case app.ANCHOR:
+					mainTitle.innerText = '您好，主播 ' + state.account;
+					levelCell.style.display = '';
+					levelVal.innerText = '等级：' + state.level;
+					expCell.style.display = '';
+					var exp = state.exp;
+					var maxExp = app.getMaxExp(state.level);
+					var preExp = app.getPreExp(state.level);
+					expVal.innerText = '经验：' + (exp - preExp) + ' / ' + (maxExp - preExp);
+					expProgCell.style.display = '';
+					mui("#mainExpProg").progressbar().setProgress((exp - preExp) * 100 / (maxExp - preExp));
+					if (app.NO_QUEST == state.questID)
+					{
+						newQuestBtn.style.display = '';
+					}
+					else
+					{
+						curQuest.style.display = '';
+					}
+					break;
+				case app.ADMIN:
+					mainTitle.innerText = '您好，房管 ' + state.account;
+					var anchorState = app.getAnchorState();
+					if (null != anchorState)
+					{
+						anchorName.style.display = '';
+						anchorName.innerText = '主播：' + anchorState.account;
+						levelCell.style.display = '';
+						levelVal.innerText = '主播等级：' + anchorState.level;
+						expCell.style.display = '';
+						var exp = anchorState.exp;
+						var maxExp = app.getMaxExp(anchorState.level);
+						var preExp = app.getPreExp(anchorState.level);
+						expVal.innerText = '主播经验：' + (exp - preExp) + ' / ' + (maxExp - preExp);
+						expProgCell.style.display = '';
+						mui("#mainExpProg").progressbar().setProgress((exp - preExp) * 100 / (maxExp - preExp));
+						if (app.NO_QUEST == anchorState.questID)
+						{
+							questStateCell.style.display = '';
+							questStateVal.innerText = '当前没有任务';
+						}
+						else
+						{
+							curQuest.style.display = '';
+						}
+					}
+					else
+					{
+						anchorName.style.display = '';
+						anchorName.innerText = '没有同组主播';
+					}
+					break;
+				default:
+					mainTitle.innerText = '您好， ' + state.account;
+					break;
+				}
+			}
+			
+			var refreshQuest = function()
+			{
+				var state = app.getState();
+				var questID = null;
+				completeQuestBtn.style.display = 'none';
+				dropQuestBtn.style.display = 'none';
+				
+				if (app.ANCHOR == state.type)
+				{
+					questID = state.questID;
+					dropQuestBtn.style.display = '';
+				}
+				else
+				{
+					var anchorState = app.getAnchorState();
+					if (null == anchorState)
+					{
+						return;
+					}
+					questID = anchorState.questID;
+					completeQuestBtn.style.display = '';
+				}
+				
+				if (null == questID || app.NO_QUEST == questID)
+				{
+					return;
+				}
+				
+				var questInfo = app.getQuestInfo(questID);
+				if (null != questInfo)
+				{
+					var lblTitle = document.getElementById('title');
+					lblTitle.innerText = questInfo.title;
+					
+					var lblDesc = document.getElementById('desc');
+					lblDesc.innerText = questInfo.desc;
+				}
+			}		
+					
+			window.addEventListener('show', function() {
+				refreshMain();
+				refreshQuest();
+			}, false);
+			refreshMain();
+			refreshQuest();
+
+			mui.plusReady(function()
+			{
+				var refreshID = setInterval(function()
+				{
+					app.refresh(function() {
+						refreshMain();
+						refreshQuest();
+					});
+				}, 10000);				
+						
+				var quitButton = document.getElementById('quit');
+				quitButton.addEventListener('tap', function(event) {
+					app.setState({});
+					plus.webview.getLaunchWebview().show("pop-in");
+				});
+				
+				var refreshButton = document.getElementById('refresh');
+				refreshButton.addEventListener('tap', function(event) {
+					app.refresh(function() {
+						refreshMain();
+						refreshQuest();
+					});
+				});
+				
+				var levelUpBonusPage = mui.preload({
+					"id": 'level_up_bonus',
+					"url": 'level_up_bonus.html'
+				});				
+				var levelUpBonusButton = document.getElementById('levelUpBonus');
+				levelUpBonusButton.addEventListener('tap', function(event) {
+					mui.openWindow({
+						id: 'level_up_bonus',
+						show: {
+							aniShow: 'pop-in'
+						},
+						styles: {
+							popGesture: 'hide'
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+				});
+//				mui.trigger(levelUpBonusButton,'tap');
+
+				var newQuestBtn = document.getElementById('newQuestBtn');
+				newQuestBtn.addEventListener('tap', function(event) {
+					app.takeQuest(function(err) {
+						if (err)
+						{
+							plus.nativeUI.toast(err);
+							return;
+						}
+						refreshMain();
+						refreshQuest();
+					});
+				});
+				
+				completeQuestBtn.addEventListener('tap', function(event) {				
+					app.finishQuest(function(err) {
+						if (err)
+						{
+							plus.nativeUI.toast(err);
+							return;
+						}
+						refreshMain();
+						refreshQuest();
+					});
+				});
+
+				dropQuestBtn.addEventListener('tap', function(event) {
+				});
+				
+				mui.oldBack = mui.back;
+				var backButtonPress = 0;
+				mui.back = function(event) {
+					backButtonPress++;
+					if (backButtonPress > 1) {
+						plus.runtime.quit();
+					} else {
+						plus.nativeUI.toast('再按一次退出应用');
+					}
+					setTimeout(function() {
+						backButtonPress = 0;
+					}, 2000);
+					return false;
+				};
+			});
+		</script>
+	</body>
+</html>
